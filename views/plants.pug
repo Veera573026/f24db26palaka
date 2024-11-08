@@ -1,0 +1,34 @@
+ doctype html
+html
+  head
+    title Plants
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+  body
+    h1 Plants
+
+    .container-fluid
+      .row
+        //- Iterate through each item in the results array passed from the server
+        each item, index in results
+          .col-sm-2
+            h2 #{item.plant_name}
+            p Type: #{item.plant_type}
+            p Age: #{item.plant_age} years
+            button(class="buy-btn" data-index=index data-name=item.plant_name) Buy
+
+    //- Add a script to bind events for the buy buttons
+    script.
+      document.addEventListener('DOMContentLoaded', function() {
+        const buyButtons = document.querySelectorAll('.buy-btn');
+        buyButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const index = button.getAttribute('data-index');
+            const name = button.getAttribute('data-name');
+            buy(index, name);
+          });
+        });
+      });
+
+      function buy(index, name) {
+        alert("You purchased item " + index + ": " + name);
+      }
