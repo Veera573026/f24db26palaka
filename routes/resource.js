@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const path = require('path');  // Import the path module
-const plants= require('../controllers/plants');  // Use path.join for correct path resolution
+const plants = require('../controllers/plants');  // Ensure the path to plants controller is correct
 
 // Route to get all plants
 router.get('/plants', plants.plant_list);
@@ -19,12 +18,3 @@ router.put('/plants/:id', plants.plant_update_put);
 router.delete('/plants/:id', plants.plant_delete);
 
 module.exports = router;
-exports.plant_list = async (req, res) => {
-    try {
-      const plants = await Plant.find();
-      res.status(200).json(plants);
-    } catch (err) {
-      res.status(500).json({ message: 'Failed to fetch plants' });
-    }
-  };
-  
