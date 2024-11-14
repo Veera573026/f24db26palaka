@@ -1,11 +1,10 @@
-// controllers/plants.js
-const Plant = require('../models/plants');  // Correct model path
+const Plant = require('../models/plants');  // Correct path to the model
 
 // Function to fetch all plants
 exports.plant_list = async (req, res) => {
   try {
-    const plants = await Plant.find();  // Get all plants from the database
-    res.render('plants', { title: 'Plant Collection', results: plants });  // Pass the results to the view
+    const plants = await Plant.find();  // Get all plants from the collection
+    res.status(200).json(plants);  // Respond with the plants as JSON
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch plants' });
   }
