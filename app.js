@@ -12,6 +12,9 @@ const usersRouter = require('./routes/users');
 const pickRouter = require('./routes/pick');
 
 const app = express();
+const resourceRouter = require('./routes/resource');
+app.use('/resource', resourceRouter);
+
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,6 +38,9 @@ app.get('/grid', (req, res) => {
   console.log(`rows: ${query.rows}`);
   console.log(`cols: ${query.cols}`);
   res.render('grid', { title: 'Grid Display', query: query });
+});
+app.get('/resource', (req, res) => {
+  res.send("This is the resource page!");
 });
 
 // Static route for displaying plants data
