@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const plantsController = require('../controllers/plantsController');
+const path = require('path');  // Import the path module
+const plantsController = require(path.join(__dirname, '..', 'controllers', 'plantsController'));  // Use path.join for correct path resolution
 
 // Route to get all plants
 router.get('/plants', plantsController.plant_list);

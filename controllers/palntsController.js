@@ -1,3 +1,4 @@
+// controllers/plantsController.js
 const Plant = require('../models/plants');
 
 // List all plants
@@ -53,3 +54,20 @@ exports.plant_delete = async (req, res) => {
     res.status(500).json({ message: 'Failed to delete plant' });
   }
 };
+// controllers/plantsController.js
+exports.plant_list = async (req, res) => {
+    const plants = await Plant.find();
+    res.json(plants);
+  };
+  // controllers/plantsController.js
+module.exports = {
+    getPlants: (req, res) => {
+      const results = [
+        { plant_name: "Cactus", plant_type: "Succulent", plant_age: 5 },
+        { plant_name: "Rose", plant_type: "Flower", plant_age: 2 },
+        { plant_name: "Oak Tree", plant_type: "Tree", plant_age: 50 }
+      ];
+      res.render('plants', { title: 'Plant Collection', results: results });
+    }
+  };
+  
