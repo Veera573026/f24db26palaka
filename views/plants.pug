@@ -1,10 +1,11 @@
- doctype html
+// plants.pug
+doctype html
 html
   head
-    title Plants
+    title #{title}
     link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
   body
-    h1 Plants
+    h1 #{title}  // Dynamically set the title
 
     .container-fluid
       .row
@@ -14,7 +15,7 @@ html
             h2 #{item.plant_name}
             p Type: #{item.plant_type}
             p Age: #{item.plant_age} years
-            button(class="buy-btn" data-index=index data-name=item.plant_name) Buy
+            button(class="buy-btn btn btn-primary" data-index=index data-name=item.plant_name) Buy
 
     //- Add a script to bind events for the buy buttons
     script.
