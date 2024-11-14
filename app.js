@@ -1,26 +1,36 @@
-var createError = require('http-errors'); 
+// Import dependencies
+var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+require('dotenv').config(); // Load environment variables
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// MongoDB setup with Mongoose
+var mongoose = require('mongoose');
+const connectionString = process.env.MONGO_CON; // MongoDB Atlas connection string
 
+// Connect to MongoDB Atlas
+mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
+
+// Check MongoDB connection
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', () => {
+  console.log('Connected to MongoDB Atlas');
+});
+
+// Initialize express app
 var app = express();
 
-// view engine setup (moved here from pick.js)
-app.set('views', path.join(__dirname, 'views'));  // Ensure views path is correct
-app.set('view engine', 'pug');  // Set Pug as the view engine
+// Import routes
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+var pickRouter = require('./routes/pick');
 
-// Route for grid page
-app.get('/grid', (req, res) => {
-  let query = req.query;
-  console.log(`rows: ${query.rows}`);
-  console.log(`cols: ${query.cols}`);
-  
-  res.render('grid', { title: 'Grid Display', query: query });
-});
+// Configure view engine
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
 // Middleware setup
 app.use(logger('dev'));
@@ -29,30 +39,38 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Use index and users routes
+// Use imported routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/pick', pickRouter);
 
-// Plants route
-app.get('/plants', (req, res) => {
-  const results = [
-    { plant_name: "Cactus", plant_type: "Succulent", plant_age: 5 },
-    { plant_name: "Rose", plant_type: "Flower", plant_age: 2 },
-    { plant_name: "Oak Tree", plant_type: "Tree", plant_age: 50 }
-  ];
-  res.render('plants', { results: results });
+// Route for grid page
+app.get('/grid', (req, res) => {
+  const { rows, cols } = req.query;
+  console.log(`Grid request - rows: ${rows}, cols: ${cols}`);
+  res.render('grid', { title: 'Grid Display', rows, cols });
 });
 
-// Import pick.js routes from the routes folder
-var pickRouter = require('./routes/pick');  // Adjusted the path to './routes/pick'
-app.use('/pick', pickRouter); // Prefix the pick.js routes with /pick
+// Define the Plant model
+const Plant = require('./models/plants');
 
-// catch 404 and forward to error handler
+// Plants route that retrieves data from MongoDB
+app.get('/plants', async (req, res) => {
+  try {
+    const results = await Plant.find(); // Retrieve all plant entries from MongoDB
+    res.render('plants', { title: 'Plant Collection', results });
+  } catch (err) {
+    console.error("Error fetching plants:", err);
+    res.status(500).send("Error fetching plants");
+  }
+});
+
+// Catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
+// Error handler
 app.use(function(err, req, res, next) {
   // Set locals, only providing error in development
   res.locals.message = err.message;
