@@ -1,28 +1,42 @@
 // controllers/plants.js
-const Plant = require('../models/plants');  // Correct path to the model
 
-// Show all plants
-exports.plant_view_all_Page = async function(req, res) {
+const Plant = require('../models/plants');  // Ensure this import is correct
+
+// Function to fetch all plants
+exports.plant_list = async (req, res) => {
   try {
-    const plants = await Plant.find();
-    res.render('plants', { title: 'Plant Search Results', results: plants });
+    const plants = await Plant.find();  // Get all plants from the collection
+    res.status(200).json(plants);  // Respond with the plants as JSON
   } catch (err) {
-    res.status(500);
-    res.send(`{"error": ${err}}`);
+    res.status(500).json({ message: 'Failed to fetch plants' });
   }
 };
 
-// Handle Plant create on POST
-exports.create_post = async function(req, res) {
+// Function to fetch details of a specific plant
+exports.plant_detail = async (req, res) => {
   try {
-    const plant = new Plant({
+    const plant = await Plant.findById(req.params.id);  // Fetch plant by ID
+    if (!plant) {
+      return res.status(404).json({ message: "Plant not found" });
+    }
+    res.status(200).json(plant);  // Respond with the plant details
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch plant details' });
+  }
+};
+
+// Add the create_post function if it's missing
+exports.plant_create_post = async (req, res) => {
+  try {
+    const newPlant = new Plant({
       plant_name: req.body.plant_name,
       plant_type: req.body.plant_type,
       plant_age: req.body.plant_age
     });
-    const result = await plant.save();
-    res.status(201).json(result);  // Respond with the newly created plant
+
+    await newPlant.save();
+    res.status(201).json(newPlant);
   } catch (err) {
-    res.status(400).json({ error: err.message });  // Return an error message if something goes wrong
+    res.status(500).json({ message: 'Failed to create plant' });
   }
 };
