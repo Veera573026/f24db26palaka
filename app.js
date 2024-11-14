@@ -27,7 +27,22 @@ app.get('/grid', (req, res) => {
   res.render('grid', { title: 'Grid Display', query: query });
 });
 
+const express = require('express');
+const router = express.Router();
+
+// Define routes
+router.get('/', (req, res) => {
+  res.send('Response from route');
+});
+
+module.exports = router;
+
 // Middleware setup
+app.use('/', indexRouter);
+
+app.use('/grid', gridRouter);
+
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
