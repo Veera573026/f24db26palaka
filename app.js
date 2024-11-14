@@ -10,11 +10,12 @@ require('dotenv').config();
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const pickRouter = require('./routes/pick');
+const resourceRouter = require('./routes/resource'); // Import the resource router
 
 const app = express();
-const resourceRouter = require('./routes/resource');
-app.use('/resource', resourceRouter);
 
+// Use resource routes for all requests starting with /resource
+app.use('/resource', resourceRouter);
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,22 +29,24 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Route handlers
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/pick', pickRouter);
+app.use('/', indexRouter);  // Main route
+app.use('/users', usersRouter);  // User-specific route
+app.use('/pick', pickRouter);  // Pick route for specific functionality
 
-// Route for grid page with dynamic query parameters
+// Example route for grid page with dynamic query parameters
 app.get('/grid', (req, res) => {
   const query = req.query;
   console.log(`rows: ${query.rows}`);
   console.log(`cols: ${query.cols}`);
   res.render('grid', { title: 'Grid Display', query: query });
 });
+
+// Test route for /resource (you may want to remove or modify this if not needed)
 app.get('/resource', (req, res) => {
   res.send("This is the resource page!");
 });
 
-// Static route for displaying plants data
+// Static route for displaying plant data
 app.get('/plants', (req, res) => {
   const results = [
     { plant_name: "Cactus", plant_type: "Succulent", plant_age: 5 },

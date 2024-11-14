@@ -1,18 +1,22 @@
-// routes/resource.js
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var api_controller = require('../controllers/api');
-var plant_controller = require('../controllers/palntsController.js');
+// Import plant controller
+const plantsController = require('../controllers/plantsController');
 
-// API Route
-router.get('/', api_controller.api);
+// Route for getting all plants
+router.get('/plants', plantsController.plant_list);
 
-// Gadget Routes
-router.get('/plants', plant_controller.plant_list);  
-router.post('/plants', plant_controller.plant_create_post);
-router.get('/plants/:id', plant_controller.plant_detail); 
-router.put('/plants/:id', plant_controller.plant_update_put);
-router.delete('/plants/:id', plant_controller.plant_delete);
+// Route for getting details of a single plant by ID
+router.get('/plants/:id', plantsController.plant_detail);
 
-module.exports = router;
+// Route for creating a new plant
+router.post('/plants', plantsController.plant_create_post);
+
+// Route for deleting a plant by ID
+router.delete('/plants/:id', plantsController.plant_delete);
+
+// Route for updating a plant by ID
+router.put('/plants/:id', plantsController.plant_update_put);
+
+module.exports = router;
