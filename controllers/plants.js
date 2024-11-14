@@ -58,10 +58,11 @@ exports.plant_create_post = async (req, res) => {
       plant_age: req.body.plant_age
     });
 
-    await newPlant.save();
-    res.status(201).json(newPlant);  // Respond with the created plant
+    await newPlant.save(); // Attempt to save the new plant to the database
+    res.status(201).json(newPlant);  // Return the created plant as a response
   } catch (err) {
-    res.status(500).json({ message: 'Failed to create plant' });
+    console.error(err);  // Log the error for debugging
+    res.status(500).json({ message: 'Failed to create plant' });  // Return the error to the client
   }
 };
 

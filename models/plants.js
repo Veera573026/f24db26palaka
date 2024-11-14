@@ -1,5 +1,3 @@
-// models/plants.js
-
 const mongoose = require('mongoose');
 
 const plantSchema = new mongoose.Schema({

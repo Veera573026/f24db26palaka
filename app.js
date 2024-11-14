@@ -45,6 +45,9 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
+mongoose.connect(process.env.MONGO_CON, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(error => console.error("MongoDB connection error:", error));
 
 // MongoDB connection
 const mongoUri = process.env.MONGO_CON;
