@@ -1,12 +1,12 @@
 // routes/resource.js
 const express = require('express');
 const router = express.Router();
-const plantsController = require('../controllers/plants');  // Corrected path to controllers/plants.js
+const plantsController = require('../controllers/plants');  // Correct path to the controller
 
-// Route to get all plants
-router.get('/plants', plantsController.plant_list);
+// Route to get all plants (renders a view)
+router.get('/plants', plantsController.plant_view_all_Page);
 
-// Route to get a single plant by ID
-router.get('/plants/:id', plantsController.plant_detail);
+// Route to create a new plant (API endpoint)
+router.post('/plants', plantsController.create_post);
 
 module.exports = router;

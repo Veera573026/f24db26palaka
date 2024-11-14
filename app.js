@@ -1,4 +1,4 @@
-// Import dependencies
+// app.js
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -10,8 +10,8 @@ require('dotenv').config();
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const pickRouter = require('./routes/pick');
-const resourceRouter = require('./routes/resource');   // API routes for plants
-const plantsRouter = require('./routes/plants');       // Pug view route for plants
+const resourceRouter = require('./routes/resource');  // API routes for plants
+const plantsRouter = require('./routes/plants');     // Route for rendering plants view
 
 const app = express();
 

@@ -1,9 +1,9 @@
 // routes/plants.js
 const express = require('express');
 const router = express.Router();
-const plantsController = require('../controllers/plants'); // Corrected path to controllers/plants.js
+const plantsController = require('../controllers/plants');  // Correct path to controller
 
-// Route to render the plants page using the controller function
-router.get('/', plantsController.plant_list);
+/* GET plants */
+router.get('/', plantsController.plant_view_all_Page);
 
 module.exports = router;
