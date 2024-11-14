@@ -5,6 +5,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
+require('dotenv').config();
+
 
 
 var indexRouter = require('./routes/index');
@@ -63,8 +65,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+console.log("MongoDB Connection String:", process.env.MONGO_CON);
 mongoose.connect(process.env.MONGO_CON)
   .then(() => console.log("Connected to MongoDB"))
   .catch((error) => console.error("MongoDB connection error:", error));
+
 
 module.exports = app;
