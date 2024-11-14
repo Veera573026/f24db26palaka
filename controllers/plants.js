@@ -18,13 +18,21 @@ exports.plant_list = async (req, res) => {
 // Function to delete a plant by ID
 exports.plant_delete = async (req, res) => {
   try {
-    const plant = await Plant.findByIdAndDelete(req.params.id);  // Delete plant by ID
-    if (!plant) {
-      return res.status(404).json({ message: "Plant not found" });
+    const plantId = req.params.id;  // Get the plant ID from the URL parameter
+    if (!plantId) {
+      return res.status(400).json({ message: 'Plant ID is required' });
     }
-    res.status(200).json({ message: "Plant successfully deleted" });
+
+    const plant = await Plant.findByIdAndDelete(plantId);  // Delete the plant by ID
+
+    if (!plant) {
+      return res.status(404).json({ message: 'Plant not found' });  // If no plant was found
+    }
+
+    res.status(200).json({ message: 'Plant successfully deleted' });  // Successfully deleted
   } catch (err) {
-    res.status(500).json({ message: 'Failed to delete plant' });
+    console.error('Error while deleting plant:', err);  // Log the error for debugging
+    res.status(500).json({ message: 'Failed to delete plant', error: err.message });
   }
 };
 
