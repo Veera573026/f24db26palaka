@@ -40,7 +40,7 @@ module.exports = router;
 // Middleware setup
 app.use('/', indexRouter);
 
-app.use('/grid', gridRouter);
+
 
 
 app.use(logger('dev'));
