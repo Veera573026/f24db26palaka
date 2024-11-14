@@ -11,6 +11,22 @@ exports.plant_list = async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch plants' });
   }
 };
+// controllers/plants.js
+
+
+
+// Function to delete a plant by ID
+exports.plant_delete = async (req, res) => {
+  try {
+    const plant = await Plant.findByIdAndDelete(req.params.id);  // Delete plant by ID
+    if (!plant) {
+      return res.status(404).json({ message: "Plant not found" });
+    }
+    res.status(200).json({ message: "Plant successfully deleted" });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to delete plant' });
+  }
+};
 
 // Function to fetch details of a specific plant
 exports.plant_detail = async (req, res) => {
