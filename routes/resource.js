@@ -1,13 +1,14 @@
+// routes/resource.js
 const express = require('express');
 const router = express.Router();
-const plantsController = require('../controllers/plants');  // Correct path to controller
+const plantsController = require('../collectors/plants');  // Correct path to controller
 
-// Route to get all plants
+// Route to get all plants (API)
 router.get('/plants', plantsController.plant_list);
 
-// Route to get a single plant by ID
+// Route to get a single plant by ID (API)
 router.get('/plants/:id', plantsController.plant_detail);
 
-// You can add more routes if needed, for example, post, put, and delete.
+// Additional CRUD routes can be added here if needed.
 
 module.exports = router;
