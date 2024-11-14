@@ -7,67 +7,47 @@ var logger = require('morgan');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var pickRouter = require('./routes/pick'); // Import pick.js route
 
 var app = express();
 
-// view engine setup (moved here from pick.js)
-app.set('views', path.join(__dirname, 'views'));  // Ensure views path is correct
-app.set('view engine', 'pug');  // Set Pug as the view engine
-
-// Route for grid page
-app.get('/grid', (req, res) => {
-  let query = req.query;
-  console.log(`rows: ${query.rows}`);
-  console.log(`cols: ${query.cols}`);
-  
-  res.render('grid', { title: 'Grid Display', query: query });
-});
-
-
-const router = express.Router();
-
-// Define routes
-router.get('/', (req, res) => {
-  res.send('Response from route');
-});
-
-module.exports = router;
+// View engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
 // Middleware setup
-app.use('/', indexRouter);
-
-
-
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Use index and users routes
+// Use routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/pick', pickRouter);
 
-// Plants route
+// Route for grid page
+app.get('/grid', (req, res) => {
+  let query = req.query;
+  console.log(`rows: ${query.rows}`);
+  console.log(`cols: ${query.cols}`);
+  res.render('grid', { title: 'Grid Display', query: query });
+});
+
+// Plants route (static data example)
 app.get('/plants', (req, res) => {
   const results = [
     { plant_name: "Cactus", plant_type: "Succulent", plant_age: 5 },
     { plant_name: "Rose", plant_type: "Flower", plant_age: 2 },
     { plant_name: "Oak Tree", plant_type: "Tree", plant_age: 50 }
   ];
-  res.render('plants', { results: results });
+  res.render('plants', { title: 'Plant Collection', results: results });
 });
 
-// Import pick.js routes from the routes folder
-var pickRouter = require('./routes/pick');  // Adjusted the path to './routes/pick'
-app.use('/pick', pickRouter); // Prefix the pick.js routes with /pick
-
-// catch 404 and forward to error handler
+// Catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
@@ -80,10 +60,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// Connect to MongoDB
 console.log("MongoDB Connection String:", process.env.MONGO_CON);
 mongoose.connect(process.env.MONGO_CON)
   .then(() => console.log("Connected to MongoDB"))
   .catch((error) => console.error("MongoDB connection error:", error));
-
 
 module.exports = app;
