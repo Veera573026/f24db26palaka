@@ -27,7 +27,7 @@ app.get('/grid', (req, res) => {
   res.render('grid', { title: 'Grid Display', query: query });
 });
 
-const express = require('express');
+
 const router = express.Router();
 
 // Define routes
