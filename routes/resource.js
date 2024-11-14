@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 
 var api_controller = require('../controllers/api');
-var plant_controller = require('../controllers/plants');
+var plant_controller = require('../controllers/plantsController');
 
 // API Route
 router.get('/', api_controller.api);
