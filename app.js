@@ -32,12 +32,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/pick', pickRouter);
-
+app.use(express.json());
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));
 });
-
+app.use((req, res, next) => {
+  console.log("Request Body:", req.body);  // Log the body to ensure it's being parsed
+  next();  // Continue processing the request
+});
 // Error handler
 app.use((err, req, res, next) => {
   res.locals.message = err.message;

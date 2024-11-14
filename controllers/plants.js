@@ -52,19 +52,38 @@ exports.plant_detail = async (req, res) => {
 // Function to create a new plant (POST request)
 exports.plant_create_post = async (req, res) => {
   try {
+    // Log the entire body to check if it's correctly received
+    console.log('Request body:', req.body);
+
+    // Check if the required fields are present
+    if (!req.body.plant_name || !req.body.plant_type || !req.body.plant_age) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    // Create a new Plant document from the request body
     const newPlant = new Plant({
       plant_name: req.body.plant_name,
       plant_type: req.body.plant_type,
       plant_age: req.body.plant_age
     });
 
-    await newPlant.save(); // Attempt to save the new plant to the database
-    res.status(201).json(newPlant);  // Return the created plant as a response
+    // Attempt to save the new plant to the database
+    await newPlant.save();
+
+    // Send back a success response with the newly created plant data
+    res.status(201).json(newPlant);
   } catch (err) {
-    console.error(err);  // Log the error for debugging
-    res.status(500).json({ message: 'Failed to create plant' });  // Return the error to the client
+    // Log the specific error to the server console
+    console.error("Error during plant creation:", err);
+
+    // Send back the error in the response
+    res.status(500).json({
+      message: 'Failed to create plant',
+      error: err.message,  // Include the error message in the response for better debugging
+    });
   }
 };
+
 
 // Function to update an existing plant (PUT request)
 exports.plant_update_put = async (req, res) => {
