@@ -84,7 +84,7 @@ exports.plant_create_post = async function(req, res) {
 };
 
 // Function to update an existing plant (PUT request)
-exports.plant_update_put = async function(req, res) {
+exports.plant_update_put = async function (req, res) {
   try {
     const updatedPlant = await Plant.findByIdAndUpdate(
       req.params.id,
@@ -102,7 +102,7 @@ exports.plant_update_put = async function(req, res) {
 
     res.status(200).json(updatedPlant);  // Respond with the updated plant
   } catch (err) {
-    console.error('Error during plant update:', err);
+    console.error('Error during plant update:', err);  // Log the error for debugging
     res.status(500).json({ message: 'Failed to update plant', error: err.message });
   }
 };
