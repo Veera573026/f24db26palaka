@@ -8,10 +8,10 @@ exports.plant_list = async function(req, res) {
     const plants = await Plant.find();  // Get all plants from the collection
     res.status(200).json(plants);  // Respond with the plants as JSON
   } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch plants' });
+    console.error('Error fetching plants:', err);  // Log the error for debugging
+    res.status(500).json({ message: 'Failed to fetch plants', error: err.message });
   }
 };
-// controllers/plants.js
 
 // Function to delete a plant by ID
 exports.plant_delete = async function(req, res) {
@@ -43,7 +43,8 @@ exports.plant_detail = async function(req, res) {
     }
     res.status(200).json(plant);  // Respond with the plant details
   } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch plant details' });
+    console.error('Error fetching plant details:', err);  // Log the error for debugging
+    res.status(500).json({ message: 'Failed to fetch plant details', error: err.message });
   }
 };
 
@@ -82,9 +83,8 @@ exports.plant_create_post = async function(req, res) {
   }
 };
 
-
 // Function to update an existing plant (PUT request)
-exports.plant_update_put = async function(req, res){
+exports.plant_update_put = async function(req, res) {
   try {
     const updatedPlant = await Plant.findByIdAndUpdate(
       req.params.id,
@@ -102,6 +102,7 @@ exports.plant_update_put = async function(req, res){
 
     res.status(200).json(updatedPlant);  // Respond with the updated plant
   } catch (err) {
-    res.status(500).json({ message: 'Failed to update plant' });
+    console.error('Error during plant update:', err);  // Log the error for debugging
+    res.status(500).json({ message: 'Failed to update plant', error: err.message });
   }
 };
