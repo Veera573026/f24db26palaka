@@ -58,24 +58,24 @@ exports.plant_create_post = async function(req, res) {
 };
 
 // Function to update an existing plant (PUT request)
-exports.plant_update_put = async function(req, res) {
+exports.plant_update_put = async function (req, res) {
+  console.log(`Update on id ${req.params.id} with body ${JSON.stringify(req.body)}`);
   try {
-    const updatedPlant = await Plant.findByIdAndUpdate(
-      req.params.id,
-      {
-        plant_name: req.body.plant_name,
-        plant_type: req.body.plant_type,
-        plant_age: req.body.plant_age
-      },
-      { new: true }  // Return the updated document
-    );
-    if (!updatedPlant) {
-      return res.status(404).json({ message: 'Plant not found' });
-    }
-    res.status(200).json(updatedPlant);
+      // Find the plant by ID
+      let toUpdate = await Plant.findById(req.params.id);
+
+      // Update properties if they are defined in the request body
+      if (req.body.plant_name) toUpdate.plant_name = req.body.plant_name;
+      if (req.body.plant_type) toUpdate.plant_type = req.body.plant_type;
+      if (req.body.plant_age) toUpdate.plant_age = req.body.plant_age;
+
+      // Save the updated document
+      let result = await toUpdate.save();
+      console.log("Success " + result);
+      res.send(result);
   } catch (err) {
-    console.error('Error during plant update:', err);
-    res.status(500).json({ message: 'Failed to update plant' });
+      res.status(500);
+      res.send(`{"error": ${err}: Update for id ${req.params.id} failed}`);
   }
 };
 
