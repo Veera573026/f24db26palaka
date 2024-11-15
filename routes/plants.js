@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const plantController = require('../controllers/plants');  // Correct path to controller
+const plantController = require('../controllers/plants');
 
-// Define routes for plants
-router.get('/', plantController.plant_list);  // Get all plants
-router.post('/', plantController.plant_create_post);  // Create a new plant
-router.put('/:id', plantController.plant_update_put);  // Update an existing plant
-router.delete('/:id', plantController.plant_delete);  // Delete a plant by ID
-router.get('/:id', plantController.plant_detail);  // Get details of a specific plant
+// Routes
+router.get('/', plantController.plant_list); // Get all plants
+router.post('/', plantController.plant_create_post); // Create a plant
+router.get('/:id', plantController.plant_detail); // Get one plant by ID
+router.put('/:id', plantController.plant_update_put); // Update one plant by ID
+router.delete('/:id', plantController.plant_delete); // Delete one plant by ID
 
 module.exports = router;
