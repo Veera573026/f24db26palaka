@@ -22,7 +22,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const resourceRouter = require('./routes/resource');  // Ensure this import is correct
 var plantsRouter = require('./routes/plants');
-const plantController = require('../controllers/plants');
+const plantsController = require('./controllers/plants');
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
