@@ -7,7 +7,9 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 
 const connectionString = process.env.MONGO_CON;
-mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(connectionString, {
+  serverSelectionTimeoutMS: 10000,
+})
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => 
