@@ -54,25 +54,30 @@ app.use((err, req, res, next) => {
 });
 
 // Reseed function to populate initial data
-async function reseed() {
+async function seedDatabase() {
   try {
-    // Remove all documents from the collection
-    await Plant.deleteMany();
-
-    // Add initial seed data
-    const seedPlants = [
-      { plant_name: 'Aloe Vera', plant_type: 'Succulent', plant_age: 2 },
-      { plant_name: 'Bamboo Palm', plant_type: 'Palm', plant_age: 5 },
-      { plant_name: 'Spider Plant', plant_type: 'Indoor', plant_age: 3 },
-    ];
-
-    // Insert seed data into the collection
-    await Plant.insertMany(seedPlants);
-    console.log('Database reseeded successfully with initial plants data.');
-  } catch (err) {
-    console.error('Error during reseeding:', err);
+    const plantCount = await Plant.countDocuments();
+    if (plantCount === 0) {
+      const plants = [
+        { plant_name: "Rose", plant_type: "Flower", plant_age: 2 },
+        { plant_name: "Bamboo", plant_type: "Tree", plant_age: 5 },
+        { plant_name: "Mint", plant_type: "Herb", plant_age: 1 }
+      ];
+      await Plant.insertMany(plants);
+      console.log("Database seeded with initial plants data.");
+    } else {
+      console.log("Database already seeded.");
+    }
+  } catch (error) {
+    console.error("Error seeding the database:", error);
   }
 }
+
+// Call the seed function after connecting to MongoDB
+db.once('open', async () => {
+  console.log("Connection to DB succeeded");
+  await seedDatabase();
+});
 
 // Conditionally run the reseed function if RESEED_DB is set to true
 if (process.env.RESEED_DB === 'true') {

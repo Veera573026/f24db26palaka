@@ -1,18 +1,18 @@
 const Plant = require('../models/plants');  // Ensure correct path to model
 
 // Function to fetch all plants
-exports.plant_list = async function(req, res) {
+exports.plant_list = async function (req, res) {
   try {
-    console.log('Fetching all plants...');
-    const plants = await Plant.find();  // Get all plants from the collection
-    console.log('Plants found:', plants);  // Log the plants found
-    res.status(200).json(plants);  // Respond with the plants as JSON
+    const plants = await Plant.find();  // Fetch all plants from the collection
+    if (plants.length === 0) {
+      return res.status(404).json({ message: "No plants found in the database" });
+    }
+    res.status(200).json(plants);
   } catch (err) {
-    console.error('Error fetching plants:', err);  // Log error for debugging
-    res.status(500).json({ message: 'Failed to fetch plants' });
+    console.error("Error fetching plants:", err);
+    res.status(500).json({ message: "Failed to fetch plants" });
   }
 };
-
 // Function to delete a plant by ID
 exports.plant_delete = async function(req, res) {
   try {
