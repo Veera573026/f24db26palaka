@@ -1,15 +1,15 @@
-// controllers/plants.js
-
-const Plant = require('../models/plants');  // Ensure this import is correct
+const Plant = require('../models/plants');  // Ensure correct path to model
 
 // Function to fetch all plants
 exports.plant_list = async function(req, res) {
   try {
+    console.log('Fetching all plants...');
     const plants = await Plant.find();  // Get all plants from the collection
+    console.log('Plants found:', plants);  // Log the plants found
     res.status(200).json(plants);  // Respond with the plants as JSON
   } catch (err) {
-    console.error('Error fetching plants:', err);  // Log the error for debugging
-    res.status(500).json({ message: 'Failed to fetch plants'});
+    console.error('Error fetching plants:', err);  // Log error for debugging
+    res.status(500).json({ message: 'Failed to fetch plants' });
   }
 };
 
@@ -24,12 +24,12 @@ exports.plant_delete = async function(req, res) {
     const plant = await Plant.findByIdAndDelete(plantId);  // Delete the plant by ID
 
     if (!plant) {
-      return res.status(404).json({ message: 'Plant not found' });  // If no plant was found
+      return res.status(404).json({ message: 'Plant not found' });
     }
 
-    res.status(200).json({ message: 'Plant successfully deleted' });  // Successfully deleted
+    res.status(200).json({ message: 'Plant successfully deleted' });
   } catch (err) {
-    console.error('Error while deleting plant:', err);  // Log the error for debugging
+    console.error('Error while deleting plant:', err);
     res.status(500).json({ message: 'Failed to delete plant', error: err.message });
   }
 };
@@ -43,7 +43,7 @@ exports.plant_detail = async function(req, res) {
     }
     res.status(200).json(plant);  // Respond with the plant details
   } catch (err) {
-    console.error('Error fetching plant details:', err);  // Log the error for debugging
+    console.error('Error fetching plant details:', err);
     res.status(500).json({ message: 'Failed to fetch plant details', error: err.message });
   }
 };
@@ -51,34 +51,26 @@ exports.plant_detail = async function(req, res) {
 // Function to create a new plant (POST request)
 exports.plant_create_post = async function(req, res) {
   try {
-    // Log the entire body to check if it's correctly received
-    console.log('Request body:', req.body);
+    console.log('Request body:', req.body);  // Log the incoming data
 
-    // Check if the required fields are present
+    // Check if required fields are provided
     if (!req.body.plant_name || !req.body.plant_type || !req.body.plant_age) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
-    // Create a new Plant document from the request body
     const newPlant = new Plant({
       plant_name: req.body.plant_name,
       plant_type: req.body.plant_type,
       plant_age: req.body.plant_age
     });
 
-    // Attempt to save the new plant to the database
-    await newPlant.save();
-
-    // Send back a success response with the newly created plant data
-    res.status(201).json(newPlant);
+    await newPlant.save();  // Save to MongoDB
+    res.status(201).json(newPlant);  // Send back the newly created plant
   } catch (err) {
-    // Log the specific error to the server console
     console.error("Error during plant creation:", err);
-
-    // Send back the error in the response
     res.status(500).json({
       message: 'Failed to create plant',
-      error: err.message,  // Include the error message in the response for better debugging
+      error: err.message,
     });
   }
 };
@@ -102,7 +94,7 @@ exports.plant_update_put = async function(req, res) {
 
     res.status(200).json(updatedPlant);  // Respond with the updated plant
   } catch (err) {
-    console.error('Error during plant update:', err);  // Log the error for debugging
+    console.error('Error during plant update:', err);
     res.status(500).json({ message: 'Failed to update plant', error: err.message });
   }
 };
