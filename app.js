@@ -39,7 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/resource',resourceRouter);
-app.use('/plants',plantRoutes);
+app.use('/plants',plantsRouter);
 
 // Error handler
 app.use((err, req, res, next) => {
