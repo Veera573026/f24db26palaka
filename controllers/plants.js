@@ -9,7 +9,7 @@ exports.plant_list = async function(req, res) {
     res.status(200).json(plants);  // Respond with the plants as JSON
   } catch (err) {
     console.error('Error fetching plants:', err);  // Log the error for debugging
-    res.status(500).json({ message: 'Failed to fetch plants', error: err.message });
+    res.status(500).json({ message: 'Failed to fetch plants'});
   }
 };
 
