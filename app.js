@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 
+
 const connectionString = process.env.MONGO_CON;
 mongoose.connect(connectionString, {
   serverSelectionTimeoutMS: 10000,
@@ -38,6 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/resource',resourceRouter);
+app.use('/plants',plantRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {
