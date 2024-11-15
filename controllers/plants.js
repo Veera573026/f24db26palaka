@@ -3,7 +3,7 @@
 const Plant = require('../models/plants');  // Ensure this import is correct
 
 // Function to fetch all plants
-exports.plant_list = async (req, res) => {
+exports.plant_list = async function(req, res) {
   try {
     const plants = await Plant.find();  // Get all plants from the collection
     res.status(200).json(plants);  // Respond with the plants as JSON
@@ -13,10 +13,8 @@ exports.plant_list = async (req, res) => {
 };
 // controllers/plants.js
 
-
-
 // Function to delete a plant by ID
-exports.plant_delete = async (req, res) => {
+exports.plant_delete = async function(req, res) {
   try {
     const plantId = req.params.id;  // Get the plant ID from the URL parameter
     if (!plantId) {
@@ -37,7 +35,7 @@ exports.plant_delete = async (req, res) => {
 };
 
 // Function to fetch details of a specific plant
-exports.plant_detail = async (req, res) => {
+exports.plant_detail = async function(req, res) {
   try {
     const plant = await Plant.findById(req.params.id);  // Fetch plant by ID
     if (!plant) {
@@ -50,7 +48,7 @@ exports.plant_detail = async (req, res) => {
 };
 
 // Function to create a new plant (POST request)
-exports.plant_create_post = async (req, res) => {
+exports.plant_create_post = async function(req, res) {
   try {
     // Log the entire body to check if it's correctly received
     console.log('Request body:', req.body);
@@ -86,7 +84,7 @@ exports.plant_create_post = async (req, res) => {
 
 
 // Function to update an existing plant (PUT request)
-exports.plant_update_put = async (req, res) => {
+exports.plant_update_put = async function(req, res){
   try {
     const updatedPlant = await Plant.findByIdAndUpdate(
       req.params.id,
