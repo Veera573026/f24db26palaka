@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+  form(action='/plants' method='POST')
+    div.form-group
+      label(for='plant_name') Name
+      input#plant_name.form-control(type='text', name='plant_name' required)
+    div.form-group
+      label(for='plant_type') Type
+      input#plant_type.form-control(type='text', name='plant_type' required)
+    div.form-group
+      label(for='plant_age') Age
+      input#plant_age.form-control(type='number', name='plant_age' required)
+    button.btn.btn-primary(type='submit') Add Plant

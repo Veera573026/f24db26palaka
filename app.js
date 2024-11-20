@@ -27,6 +27,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const resourceRouter = require('./routes/resource');
 const plantsRouter = require('./routes/plants');
+const plantsRouter = require('./routes/plants');
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -38,6 +39,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/plants', plantsRouter);
 
 // Route handlers
 app.use('/', indexRouter);
