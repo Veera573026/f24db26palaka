@@ -2,7 +2,26 @@ extends layout
 
 block content
   h1= title
-  p Name: #{toShow.plant_name}
-  p Type: #{toShow.plant_type}
-  p Age: #{toShow.plant_age} years
-  a(href='/plants' class='btn btn-primary') Back to List
+  if (!toShow)
+    h2 No plant found
+  else
+    - let plantId = toShow._id
+    - let plantName = toShow.plant_name
+    - let plantType = toShow.plant_type
+    - let plantAge = toShow.plant_age
+
+    div
+      div.row
+        div(class='plantAttr mr-3') Plant ID:
+        div #{plantId}
+      div.row
+        div(class='plantAttr mr-3') Plant Name:
+        div #{plantName}
+      div.row
+        div(class='plantAttr mr-3') Plant Type:
+        div #{plantType}
+      div.row
+        div(class='plantAttr mr-3') Plant Age:
+        div #{plantAge} years
+
+    a(href='/plants' class='btn btn-primary mt-3') Back to Plant List
