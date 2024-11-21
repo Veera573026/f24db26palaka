@@ -1,39 +1,30 @@
-require('dotenv').config();
-const createError = require('http-errors');
+// app.js or server.js
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const plantsRouter = require('./routes/plants');  // Correct path
 
 const app = express();
-const Plant = require('./models/plants');
-const plantsRouter = require('./routes/plants');  // Import plants router
-const plantsController = require('../controllers/plants'); // Ensure the path is correct
-
-// Database connection
-mongoose.connect('mongodb://localhost:27017/your_db_name')
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
 
 // Middleware setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json());  // Ensure express.json() is enabled for POST requests
+app.use(express.urlencoded({ extended: false }));  // For form submissions
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes
-app.use('/plants', plantsRouter);
+// Routes setup
+app.use('/plants', plantsRouter);  // Make sure you use the plantsRouter
 
-// Error handling
-app.use((err, req, res, next) => {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.render('error');
+// MongoDB connection
+mongoose.connect('mongodb://localhost:27017/your_db_name', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+mongoose.connection.once('open', () => {
+  console.log('Connected to MongoDB');
 });
 
 module.exports = app;
