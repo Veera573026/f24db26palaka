@@ -1,18 +1,28 @@
-
-// GET all plants and render the page with plant data
 const express = require('express');
 const router = express.Router();
-const plantsController = require('../controllers/plants'); // Ensure correct path to the controller
+const Plant = require('../models/plants');
 
-// Route definitions
-router.get('/plants', plantsController.plant_list); // Get all plants
-router.get('/plants/:id', plantsController.plant_detail); // Get a single plant by ID
-router.post('/plants', plantsController.plant_create_post); // Create a plant
-router.put('/plants/:id', plantsController.plant_update_put); // Update a plant by ID
-router.delete('/plants/:id', plantsController.plant_delete); // Delete a plant by ID
-router.get('/plants/detail', plantsController.plant_view_one_Page); // View a single plant by query ID
+// GET all plants and render the plants list page
+router.get('/', async (req, res, next) => {
+  try {
+    const plants = await Plant.find();  // Fetch all plants from the database
+    res.render('plants', { plants });  // Render the 'plants.pug' view with plant data
+  } catch (err) {
+    next(err);  // Pass the error to the error handler
+  }
+});
 
-module.exports = router;
-
+// GET details of a specific plant by ID
+router.get('/detail/:id', async (req, res, next) => {
+  try {
+    const plant = await Plant.findById(req.params.id);  // Find a specific plant by ID
+    if (!plant) {
+      return res.status(404).send('Plant not found');  // If plant not found, return 404
+    }
+    res.render('plantDetail', { plant });  // Render 'plantDetail.pug' view with plant data
+  } catch (err) {
+    next(err);  // Pass the error to the error handler
+  }
+});
 
 module.exports = router;
