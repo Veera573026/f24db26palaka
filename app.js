@@ -1,4 +1,3 @@
-// app.js or server.js
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -7,6 +6,10 @@ const mongoose = require('mongoose');
 const plantsRouter = require('./routes/plants');  // Correct path
 
 const app = express();
+
+// Set Pug as the view engine
+app.set('view engine', 'pug');  // Set Pug as the default view engine
+app.set('views', path.join(__dirname, 'views'));  // Ensure the 'views' folder is being used for Pug templates
 
 // Middleware setup
 app.use(logger('dev'));
