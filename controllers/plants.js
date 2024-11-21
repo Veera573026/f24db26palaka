@@ -85,3 +85,13 @@ exports.plant_delete = async (req, res) => {
     res.status(500).send('Failed to delete plant');
   }
 };
+
+exports.plant_create_Page = function (req, res) {
+  console.log("Create view");
+  try {
+    res.render('plantcreate', { title: 'Create Plant' });
+  } catch (err) {
+    res.status(500);
+    res.send(`{'error': '${err}'}`);
+  }
+};

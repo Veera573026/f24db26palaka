@@ -1,15 +1,53 @@
+//- extends layout
+
+//- block content
+//-   h1= title
+//-   form(action='/plants' method='POST')
+//-     div.form-group
+//-       label(for='plant_name') Name
+//-       input#plant_name.form-control(type='text', name='plant_name' required)
+//-     div.form-group
+//-       label(for='plant_type') Type
+//-       input#plant_type.form-control(type='text', name='plant_type' required)
+//-     div.form-group
+//-       label(for='plant_age') Age
+//-       input#plant_age.form-control(type='number', name='plant_age' required)
+//-     button.btn.btn-primary(type='submit') Add Plant
+
 extends layout
 
 block content
   h1= title
-  form(action='/plants' method='POST')
+  link(rel='stylesheet', href='/stylesheets/style.css')
+
+  form(id='PlantForm', action="/resource/plants", method="POST")
     div.form-group
-      label(for='plant_name') Name
-      input#plant_name.form-control(type='text', name='plant_name' required)
+      label.plantAtt(for='plant_name') Plant Name
+      input#plant_name(type='text', name='plant_name', class='form-control', required)
     div.form-group
-      label(for='plant_type') Type
-      input#plant_type.form-control(type='text', name='plant_type' required)
+      label.plantAtt(for='plant_type') Plant Type
+      input#plant_type(type='text', name='plant_type', class='form-control', required)
     div.form-group
-      label(for='plant_age') Age
-      input#plant_age.form-control(type='number', name='plant_age' required)
-    button.btn.btn-primary(type='submit') Add Plant
+      label.plantAtt(for='plant_age') Plant Age (Years)
+      input#plant_age(type='number', name='plant_age', class='form-control', required, min='0')
+    button(type='submit', class='btn btn-primary mt-3') Create Plant
+
+  script.
+    document.forms['PlantForm'].addEventListener('submit', (event) => {
+      event.preventDefault(); 
+      
+      alert("Submitting plant details...");
+      fetch(event.target.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(event.target))
+      }).then((resp) => {
+        if (!resp.ok) throw new Error(resp.statusText);
+        return resp.json();
+      }).then((body) => {
+        alert("Save succeeded");
+        console.log("Server response:", body);
+      }).catch((error) => {
+        alert("Save failed: " + error.message);
+      });
+    });
