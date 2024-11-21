@@ -1,38 +1,11 @@
 html
   head
     title Plants List
-    style
-      | body {
-      |   font-family: Arial, sans-serif;
-      |   margin: 0;
-      |   padding: 20px;
-      |   background-color: #f4f4f9;
-      | }
-      | h1 {
-      |   text-align: center;
-      |   color: #333;
-      | }
-      | .plant {
-      |   background-color: white;
-      |   padding: 20px;
-      |   margin: 10px;
-      |   border-radius: 8px;
-      |   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      | }
-      | .plant-name {
-      |   font-size: 1.5em;
-      |   color: #2a9d8f;
-      | }
-      | .plant-type, .plant-age {
-      |   font-size: 1.2em;
-      |   color: #264653;
-      | }
-
+    link(rel='stylesheet', href='/styles.css')  // Link to external CSS file
   body
     h1 Plants List
     each plant in plants
       .plant
-        
         .plant-name= plant.plant_name
         .plant-type= "Type: " + plant.plant_type
         .plant-age= "Age: " + plant.plant_age + " years"
