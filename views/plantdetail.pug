@@ -1,10 +1,10 @@
 html
   head
-    title Plant Detail
-    link(rel='stylesheet', href='/styles.css')  
+    title= title
+    link(rel='stylesheet', href='/styles.css')  // Link to your CSS file
 
   body
-    h1= toShow.plant_name
-    p Type: #{toShow.plant_type}
-    p Age: #{toShow.plant_age} years
-    a(href='/plants') Back to Plants List
+    h1= plant.plant_name  // Display the plant's name as a heading
+    p Type: #{plant.plant_type}  // Display plant type
+    p Age: #{plant.plant_age} years  // Display plant age
+    a(href='/plants') Back to Plants List  // Link back to the list of plants

@@ -1,8 +1,30 @@
-.plantAttr {
-  background-color: aquamarine;
-  width: 150px;
-  padding: 5px;
-  margin-right: 10px;
-  display: inline-block;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+
+h1 {
+  color: #2c3e50;
+}
+
+.plant {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.plant-name {
   font-weight: bold;
+}
+
+a {
+  color: #2980b9;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
