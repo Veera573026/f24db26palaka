@@ -9,12 +9,10 @@ const mongoose = require('mongoose');
 // Import the Plant model
 const Plant = require('./models/plants');
 
-mongoose.connect('mongodb://localhost:27017/your_db_name', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch((err) => console.error('MongoDB connection error:', err));
+mongoose.connect('mongodb://localhost:27017/your_db_name')
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.error('MongoDB connection error:', err));
+
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
