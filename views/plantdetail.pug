@@ -1,23 +1,10 @@
-// views/plantdetail.pug
-extends layout
+
+
+extends layout.pug
 
 block content
-  h1= title
-  - let plantid = toShow._id
-  - let plant_name = toShow.plant_name
-  - let plant_type = toShow.plant_type
-  - let plant_age = toShow.plant_age
-
-  div
-    div.row
-      div(class='plantAttr mr-3') Plant ID is:
-      div #{plantid}
-    div.row
-      div(class='plantAttr mr-3') Plant Name is:
-      div #{plant_name}
-    div.row
-      div(class='plantAttr mr-3') Plant Type is:
-      div #{plant_type}
-    div.row
-      div(class='plantAttr mr-3') Plant Age is:
-      div #{plant_age} years
+  h1 Plant Details
+  p Plant Name: #{plant.plant_name}
+  p Plant Type: #{plant.plant_type}
+  p Plant Age: #{plant.plant_age} years
+  a(href='/plants') Back to plants list
