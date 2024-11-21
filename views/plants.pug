@@ -2,11 +2,13 @@ html
   head
     title Plants List
     link(rel='stylesheet', href='/styles.css')  
+
   body
     h1 Plants List
     each plant in plants
       .plant
         .plant-name
+          // This is a comment outside of the expression
           a(href='/plants/' + plant._id)= plant.plant_name  // Link to the plant's detail page
         .plant-type= "Type: " + plant.plant_type  // Display the plant type
         .plant-age= "Age: " + plant.plant_age + " years"  // Display the plant age
