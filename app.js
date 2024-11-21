@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const app = express();
 const Plant = require('./models/plants');
 const plantsRouter = require('./routes/plants');  // Import plants router
+const plantsController = require('../controllers/plants'); // Ensure the path is correct
 
 // Database connection
 mongoose.connect('mongodb://localhost:27017/your_db_name')
