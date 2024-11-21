@@ -1,16 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const Plant = require('../models/plants');
+const plantsController = require('../controllers/plants'); // Ensure correct path to the controller
 
-// GET all plants and render the plants list page
-router.get('/', async (req, res, next) => {
-  try {
-    const plants = await Plant.find();  // Fetch all plants from the database
-    res.render('plants', { plants });  // Render the 'plants.pug' view with plant data
-  } catch (err) {
-    console.error('Error fetching plants:', err);  // Log the error
-    next(err);  // Pass the error to the error handler
-  }
-});
+// Route definitions
+router.get('/', plantsController.plant_list);  // Get all plants
+router.get('/:id', plantsController.plant_detail);  // Get a single plant by ID
+router.post('/', plantsController.plant_create_post);  // Create a plant
+router.put('/:id', plantsController.plant_update_put);  // Update a plant by ID
+router.delete('/:id', plantsController.plant_delete);  // Delete a plant by ID
+router.get('/detail', plantsController.plant_view_one_Page);  // View a single plant by query ID
 
 module.exports = router;
