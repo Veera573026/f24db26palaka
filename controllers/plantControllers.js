@@ -1,5 +1,9 @@
 const Costume = require('../models/costume'); // Ensure the model is correctly imported
-
+// controllers/plantsControllers.js
+exports.sampleFunction = (req, res) => {
+    res.send("Plants Controller is working!");
+  };
+  
 exports.costume_create_post = async (req, res) => {
   try {
     const { costume_type, size, cost } = req.body;
