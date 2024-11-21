@@ -28,3 +28,15 @@ a {
 a:hover {
   text-decoration: underline;
 }
+/* public/stylesheets/style.css */
+.plantAttr {
+  background-color: aquamarine;
+  width: 120px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.mr-3 {
+  margin-right: 1rem;
+}

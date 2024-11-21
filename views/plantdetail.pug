@@ -1,10 +1,23 @@
-html
-  head
-    title= title
-    link(rel='stylesheet', href='/styles.css')  // Link to your CSS file
+// views/plantdetail.pug
+extends layout
 
-  body
-    h1= plant.plant_name  // Display the plant's name as a heading
-    p Type: #{plant.plant_type}  // Display plant type
-    p Age: #{plant.plant_age} years  // Display plant age
-    a(href='/plants') Back to Plants List  // Link back to the list of plants
+block content
+  h1= title
+  - let plantid = toShow._id
+  - let plant_name = toShow.plant_name
+  - let plant_type = toShow.plant_type
+  - let plant_age = toShow.plant_age
+
+  div
+    div.row
+      div(class='plantAttr mr-3') Plant ID is:
+      div #{plantid}
+    div.row
+      div(class='plantAttr mr-3') Plant Name is:
+      div #{plant_name}
+    div.row
+      div(class='plantAttr mr-3') Plant Type is:
+      div #{plant_type}
+    div.row
+      div(class='plantAttr mr-3') Plant Age is:
+      div #{plant_age} years
