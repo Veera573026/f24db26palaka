@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+  form(id='CostumeForm', action="/plants", method="POST")
+    .form-group
+      label(for='plant_name') Plant Name
+      input#plant_name(type='text', name='plant_name', required)
+    .form-group
+      label(for='plant_type') Plant Type
+      input#plant_type(type='text', name='plant_type', required)
+    .form-group
+      label(for='plant_age') Plant Age
+      input#plant_age(type='number', name='plant_age', required)
+    button(type='submit') Submit

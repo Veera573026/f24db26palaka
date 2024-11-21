@@ -9,6 +9,6 @@ router.post('/plants', plantsController.plant_create_post); // Create a plant
 router.put('/plants/:id', plantsController.plant_update_put); // Update a plant by ID
 router.delete('/plants/:id', plantsController.plant_delete); // Delete a plant by ID
 router.get('/plants/detail', plantsController.plant_view_one_Page); // View a single plant by query ID
-router.post('/plants', plantsController.plant_create_page); // Create a plant
+//router.post('/plants', plantsController.plant_create); // Create a plant
 
 module.exports = router;
