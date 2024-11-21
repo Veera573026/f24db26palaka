@@ -26,8 +26,7 @@ const app = express();
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const resourceRouter = require('./routes/resource');
-const plantsRouter = require('./routes/plants');
-
+const plantsRouter = require('./routes/plants');  // Plant route
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -39,13 +38,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/plants', plantsRouter);
+app.use('/plants', plantsRouter);  // Mount the plantsRouter
 
 // Route handlers
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/resource', resourceRouter);
-
 
 // Error handler
 app.use((err, req, res, next) => {
@@ -80,10 +78,5 @@ db.once('open', async () => {
   console.log("Connection to DB succeeded");
   await seedDatabase();
 });
-
-// Conditionally run the reseed function if RESEED_DB is set to true
-if (process.env.RESEED_DB === 'true') {
-  reseed();
-}
 
 module.exports = app;
