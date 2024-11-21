@@ -1,11 +1,10 @@
-// controllers/plants.js
 const Plant = require('../models/plants');
 
 // Get all plants
 exports.plant_list = async (req, res) => {
   try {
     const plants = await Plant.find();
-    res.render('plants', { plants });
+    res.render('plants', { title: 'Plants List', plants });
   } catch (err) {
     console.error('Error fetching plants:', err);
     res.status(500).send('Failed to fetch plants');
@@ -19,7 +18,7 @@ exports.plant_detail = async (req, res) => {
     if (!plant) {
       return res.status(404).send('Plant not found');
     }
-    res.render('plantdetail', { plant });
+    res.render('plantdetail', { title: 'Plant Detail', plant });
   } catch (err) {
     console.error('Error fetching plant:', err);
     res.status(500).send('Failed to fetch plant');
@@ -27,13 +26,10 @@ exports.plant_detail = async (req, res) => {
 };
 
 // View one plant page by query ID
-exports.plant_view_one_Page = async function (req, res) {
-  console.log("single view for id " + req.query.id);
+exports.plant_view_one_Page = async (req, res) => {
   try {
-    const result = await Plant.findById(req.query.id);
-    res.render('plantdetail', {
-      title: 'Plant Detail', toShow: result
-    });
+    const plant = await Plant.findById(req.query.id);
+    res.render('plantdetail', { title: 'Plant Detail', plant });
   } catch (err) {
     res.status(500).send(`{'error': '${err}'}`);
   }

@@ -1,10 +1,8 @@
-
-
-extends layout.pug
+extends layout
 
 block content
-  h1 Plant Details
-  p Plant Name: #{plant.plant_name}
-  p Plant Type: #{plant.plant_type}
-  p Plant Age: #{plant.plant_age} years
-  a(href='/plants') Back to plants list
+  h1= title
+  p Name: #{plant.plant_name}
+  p Type: #{plant.plant_type}
+  p Age: #{plant.plant_age} years
+  a(href='/plants') Back to Plants List
