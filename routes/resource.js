@@ -1,20 +1,25 @@
-const express = require('express');
-const router = express.Router();
+var express = require('express');
+var router = express.Router();
 
-// Require controller modules
-const api_controller = require('../controllers/api');
-const potion_controller = require('../controllers/potion');  // Changed from relicController to potionController
+var api_controller = require('../controllers/api');
+var galaxy_controller = require('../controllers/galaxies');
 
-/// API ROUTE ///
+// Root route for API documentation or overview
+router.get('/', api_controller.api);
 
-// GET request for API base
-router.get('/', api_controller.api);  // API base route
+// Create a new galaxy
+router.post('/galaxies', galaxy_controller.galaxy_create_post);
 
-// Potion Routes
-router.get('/potions', potion_controller.potion_list); // GET request for list of all Potions
-router.post('/potions', potion_controller.potion_create_post); // POST request for creating a Potion
-router.get('/potions/:id', potion_controller.potion_detail); // GET request for a specific Potion
-router.put('/potions/:id', potion_controller.potion_update_put); // PUT request to update a Potion
-router.delete('/potions/:id', potion_controller.potion_delete); // DELETE request to delete a Potion
+// Delete a galaxy by ID
+router.delete('/galaxies/:id', galaxy_controller.galaxy_delete);
+
+// Update a galaxy by ID
+router.put('/galaxies/:id', galaxy_controller.galaxy_update_put);
+
+// Get details of a specific galaxy by ID
+router.get('/galaxies/:id', galaxy_controller.galaxy_detail);
+
+// Get a list of all galaxies
+router.get('/galaxies', galaxy_controller.galaxy_list);
 
 module.exports = router;
