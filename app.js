@@ -85,23 +85,29 @@ app.use((err, req, res, next) => {
 mongoose.connection.once('open', async () => {
   console.log('MongoDB connection is open');
 
-  // Database seeding logic
   let reseed = true; // Set to false to prevent reseeding
   if (reseed) {
     try {
       console.log('Reseeding database...');
-      await Artifact.deleteMany();
-      const instance1 = new Galaxy({ name: "MilkyWay", year: 1234 ,inventor: "Myself",distance:18000 , type:"ownone"});
-      const instance2 = new Galaxy({ name: "MyWay", year: 1100 ,inventor: "My Friend",distance:1222 , type:"Selfless"});
-      const instance3 = new Galaxy({ name: "Chocolate", year: 1400,inventor: "MeOwn",distance:1110 , type:"Selish"});
+
+      // Clear existing data
+      await Galaxy.deleteMany();
+
+      // Add new instances with valid data
+      const instance1 = new Galaxy({ name: "Milky Way", year: 1234, inventor: "Myself", distance: 18000, type: "Spiral" });
+      const instance2 = new Galaxy({ name: "Andromeda", year: 1100, inventor: "My Friend", distance: 1222, type: "Elliptical" });
+      const instance3 = new Galaxy({ name: "Triangulum", year: 1400, inventor: "MeOwn", distance: 1110, type: "Irregular" });
+
       await instance1.save();
       await instance2.save();
       await instance3.save();
-      console.log("Database seeded with artifacts!");
+
+      console.log("Database seeded with galaxies!");
     } catch (err) {
       console.error('Error while seeding database:', err);
     }
   }
 });
+
 
 module.exports = app;

@@ -14,18 +14,19 @@ const validateGalaxy = (data) => {
 
 // List all galaxies (Read all)
 exports.galaxy_list = async function (req, res) {
-    try {
-        const galaxies = await Galaxy.find();
-        res.render("galaxies", { results: galaxies });
-    } catch (err) {
-        res.status(500).send(`Error retrieving galaxies: ${err}`);
-    }
+  try {
+    const galaxies = await Galaxy.find();
+    console.log("Galaxies retrieved:", galaxies); // Debugging statement
+    res.render("galaxies", { title: "Galaxy List", results: galaxies });
+  } catch (err) {
+    console.error("Error retrieving galaxies:", err);
+    res.status(500).send(`Error retrieving galaxies: ${err.message}`);
+  }
 };
+
 
 // Get details of a specific galaxy (Read one)
 exports.galaxy_detail = async function (req, res) {
-    console.log("Fetching Galaxy ID:", req.params.id);
-
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).send("Invalid Galaxy ID format");
     }
@@ -35,7 +36,7 @@ exports.galaxy_detail = async function (req, res) {
         if (!galaxy) {
             return res.status(404).send("Galaxy not found");
         }
-        res.send(galaxy);
+        res.render("galaxydetail", { title: "Galaxy Details", toShow: galaxy });
     } catch (err) {
         res.status(500).send(`Error retrieving galaxy: ${err}`);
     }
@@ -66,8 +67,6 @@ exports.galaxy_create_post = async function (req, res) {
 
 // Update an existing galaxy (Update)
 exports.galaxy_update_put = async function (req, res) {
-    console.log("Updating Galaxy ID:", req.params.id);
-
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).send("Invalid Galaxy ID format");
     }
@@ -78,12 +77,11 @@ exports.galaxy_update_put = async function (req, res) {
             return res.status(404).send("Galaxy not found");
         }
 
-        // Update fields
-        if (req.body.name) galaxy.name = req.body.name;
-        if (req.body.year) galaxy.year = req.body.year;
-        if (req.body.inventor) galaxy.inventor = req.body.inventor;
-        if (req.body.distance) galaxy.distance = req.body.distance;
-        if (req.body.type) galaxy.type = req.body.type;
+        galaxy.name = req.body.name || galaxy.name;
+        galaxy.year = req.body.year || galaxy.year;
+        galaxy.inventor = req.body.inventor || galaxy.inventor;
+        galaxy.distance = req.body.distance || galaxy.distance;
+        galaxy.type = req.body.type || galaxy.type;
 
         const updatedGalaxy = await galaxy.save();
         res.json({ message: "Galaxy updated successfully", galaxy: updatedGalaxy });
@@ -94,8 +92,6 @@ exports.galaxy_update_put = async function (req, res) {
 
 // Delete a galaxy (Delete)
 exports.galaxy_delete = async function (req, res) {
-    console.log("Deleting Galaxy ID:", req.params.id);
-
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).send("Invalid Galaxy ID format");
     }
@@ -108,73 +104,5 @@ exports.galaxy_delete = async function (req, res) {
         res.json({ message: "Galaxy deleted successfully", galaxy });
     } catch (err) {
         res.status(500).send(`Error deleting galaxy: ${err}`);
-    }
-};
-
-// Render view for a single galaxy
-exports.galaxy_view_one_Page = async function (req, res) {
-    console.log("View for Galaxy ID:", req.query.id);
-
-    if (!req.query.id || !mongoose.Types.ObjectId.isValid(req.query.id)) {
-        return res.status(400).send("Invalid Galaxy ID");
-    }
-
-    try {
-        const galaxy = await Galaxy.findById(req.query.id);
-        if (!galaxy) {
-            return res.status(404).send("Galaxy not found");
-        }
-        res.render("galaxydetail", { title: "Galaxy Detail", toShow: galaxy });
-    } catch (err) {
-        res.status(500).send(`Error rendering detail page: ${err}`);
-    }
-};
-
-// Render page to create a new galaxy
-exports.galaxy_create_Page = function (req, res) {
-    console.log("Render Create Galaxy Page");
-
-    try {
-        res.render("galaxycreate", { title: "Create Galaxy" });
-    } catch (err) {
-        res.status(500).send(`Error rendering create page: ${err}`);
-    }
-};
-
-// Render page to update a galaxy
-exports.galaxy_update_Page = async function (req, res) {
-    console.log("Render Update Galaxy Page for ID:", req.query.id);
-
-    if (!req.query.id || !mongoose.Types.ObjectId.isValid(req.query.id)) {
-        return res.status(400).send("Invalid Galaxy ID");
-    }
-
-    try {
-        const galaxy = await Galaxy.findById(req.query.id);
-        if (!galaxy) {
-            return res.status(404).send("Galaxy not found");
-        }
-        res.render("galaxyupdate", { title: "Update Galaxy", toShow: galaxy });
-    } catch (err) {
-        res.status(500).send(`Error rendering update page: ${err}`);
-    }
-};
-
-// Render page to delete a galaxy
-exports.galaxy_delete_Page = async function (req, res) {
-    console.log("Render Delete Galaxy Page for ID:", req.query.id);
-
-    if (!req.query.id || !mongoose.Types.ObjectId.isValid(req.query.id)) {
-        return res.status(400).send("Invalid Galaxy ID");
-    }
-
-    try {
-        const galaxy = await Galaxy.findById(req.query.id);
-        if (!galaxy) {
-            return res.status(404).send("Galaxy not found");
-        }
-        res.render("galaxydelete", { title: "Delete Galaxy", toShow: galaxy });
-    } catch (err) {
-        res.status(500).send(`Error rendering delete page: ${err}`);
     }
 };
