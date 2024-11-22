@@ -1,4 +1,4 @@
-const Plant = require('../models/plants');
+const Plant = require('../models/galaxies');
 
 // Get all plants
 exports.plant_list = async (req, res) => {

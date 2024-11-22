@@ -1,14 +1,25 @@
-const express = require('express');
-const router = express.Router();
-const plantsController = require('../controllers/plants'); // Ensure correct path to the controller
+var express = require('express');
+var router = express.Router();
 
-// Route definitions
-router.get('/plants', plantsController.plant_list); // Get all plants
-router.get('/plants/:id', plantsController.plant_detail); // Get a single plant by ID
-router.post('/plants', plantsController.plant_create_post); // Create a plant
-router.put('/plants/:id', plantsController.plant_update_put); // Update a plant by ID
-router.delete('/plants/:id', plantsController.plant_delete); // Delete a plant by ID
-router.get('/plants/detail', plantsController.plant_view_one_Page); // View a single plant by query ID
-//router.post('/plants', plantsController.plant_create); // Create a plant
+var api_controller = require('../controllers/api');
+var galaxy_controller = require('../controllers/galaxies');
+
+// Root route for API documentation or overview
+router.get('/', api_controller.api);
+
+// Create a new galaxy
+router.post('/galaxies', galaxy_controller.galaxy_create_post);
+
+// Delete a galaxy by ID
+router.delete('/galaxies/:id', galaxy_controller.galaxy_delete);
+
+// Update a galaxy by ID
+router.put('/galaxies/:id', galaxy_controller.galaxy_update_put);
+
+// Get details of a specific galaxy by ID
+router.get('/galaxies/:id', galaxy_controller.galaxy_detail);
+
+// Get a list of all galaxies
+router.get('/galaxies', galaxy_controller.galaxy_list);
 
 module.exports = router;
