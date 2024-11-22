@@ -32,6 +32,7 @@ const galaxiesRouter = require('./routes/galaxies');
 
 // Import Account model for Passport
 const Account = require('./models/account');
+const { galaxy_create_Page } = require('./controllers/galaxies');
 
 const app = express();
 
@@ -78,6 +79,29 @@ app.use((err, req, res, next) => {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.status(err.status || 500);
   res.render('error');
+});
+
+// Ensure the database is seeded only after the connection is established
+mongoose.connection.once('open', async () => {
+  console.log('MongoDB connection is open');
+
+  // Database seeding logic
+  let reseed = true; // Set to false to prevent reseeding
+  if (reseed) {
+    try {
+      console.log('Reseeding database...');
+      await Artifact.deleteMany();
+      const instance1 = new Galaxy({ name: "MilkyWay", year: 1234 ,inventor: "Myself",distance:18000 , type:"ownone"});
+      const instance2 = new Galaxy({ name: "MyWay", year: 1100 ,inventor: "My Friend",distance:1222 , type:"Selfless"});
+      const instance3 = new Galaxy({ name: "Chocolate", year: 1400,inventor: "MeOwn",distance:1110 , type:"Selish"});
+      await instance1.save();
+      await instance2.save();
+      await instance3.save();
+      console.log("Database seeded with artifacts!");
+    } catch (err) {
+      console.error('Error while seeding database:', err);
+    }
+  }
 });
 
 module.exports = app;
