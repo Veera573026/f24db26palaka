@@ -1,7 +1,10 @@
-exports.api=function(req,res){
-    res.status(200).json({
-        resources:[
-            {resources: 'plants',verbs:['GET','POST','PUT','DELETE']}
-        ]
-    });
-};
+exports.api = function(req, res) {
+    res.write('[');
+    res.write('{"resource":"galaxies", ');
+    res.write(' "verbs":["GET","PUT", "DELETE"] ');
+    res.write('}');
+    res.write(']')
+    res.send();
+  };
+  
+    

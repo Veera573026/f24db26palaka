@@ -1,13 +1,32 @@
-const express = require('express');
-const router = express.Router();
-const plantsControllers = require('../controllers/plantsControllers');
+var express = require('express');
+var router = express.Router();
+var galaxy_controller = require('../controllers/galaxies');
 
-// Routes
-router.get('/', plantsController.plant_list);
-router.get('/detail', plantsController.plant_view_one_Page);
-router.get('/:id', plantsController.plant_detail);
-router.post('/', plantsController.plant_create_post);
-router.put('/:id', plantsController.plant_update_put);
-router.delete('/:id', plantsController.plant_delete);
-router.get('/create', plantsController.plant_create_Page);
+// List all galaxies
+router.get('/', galaxy_controller.galaxy_list);
+
+// Create a new galaxy (POST submission)
+router.post('/', galaxy_controller.galaxy_create_post);
+
+// Update a galaxy (PUT request)
+router.put('/galaxies/:id', galaxy_controller.galaxy_update_put);
+
+// Delete a galaxy (DELETE request)
+router.delete('/galaxies/:id', galaxy_controller.galaxy_delete);
+
+// View details of a specific galaxy by ID
+router.get('/galaxies/:id', galaxy_controller.galaxy_detail);
+
+// Single view of a galaxy (by ID passed as a query parameter)
+router.get('/detail', galaxy_controller.galaxy_view_one_Page);
+
+// Create a new galaxy (form page)
+router.get('/create', galaxy_controller.galaxy_create_Page);
+
+// Update a galaxy (form page)
+router.get('/update', galaxy_controller.galaxy_update_Page);
+
+// Delete a galaxy (form page)
+router.get('/delete', galaxy_controller.galaxy_delete_Page);
+
 module.exports = router;
