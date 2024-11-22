@@ -1,113 +1,93 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-require('dotenv').config();
+require('dotenv').config();  // Load environment variables at the very top
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+var mongoose = require('mongoose');
 
-const mongoose = require('mongoose');
+// Import routers
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+var potionRouter = require('./routes/potion');
+var gridRouter = require('./routes/grid');
+var pickRouter = require('./routes/pick');
+var resourceRouter = require('./routes/resource'); // Import the resource router
+
+// Initialize express app
+var app = express();
+
+// MongoDB connection setup
 const connectionString = process.env.MONGO_CON;
+console.log("MongoDB URI:", connectionString);
 
-// Establish MongoDB connection with better error handling
-mongoose.connect(connectionString, { 
-  useNewUrlParser: true, 
-  useUnifiedTopology: true 
-})
-  .then(() => console.log("Connected to DB successfully"))
-  .catch((err) => {
-    console.error("MongoDB connection error:", err.message);
-    process.exit(1); // Exit the application if the connection fails
-  });
+mongoose.connect(connectionString);
+const db = mongoose.connection;
 
-// Import passport and passport-local modules
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', function () {
+  console.log('Connection to MongoDB Atlas succeeded');
+});
 
-// Import routes
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const resourceRouter = require('./routes/resource');
-const galaxiesRouter = require('./routes/galaxies');
-//const accountRouter = require('./routes/account'); // Add the account router for login/register/logout
+// Model setup (assuming we are working with a model called Potion)
+const Potion = require('./models/potion');  // Ensure correct casing and path for your model file
 
-// Import Account model for Passport
-const Account = require('./models/account');
-const { galaxy_create_Page } = require('./controllers/galaxies');
+// Seed the database
+async function recreateDB() {
+  await Potion.deleteMany(); // Clear existing data
 
-const app = express();
+  // Create sample potion entries
+  let potion1 = new Potion({ name: "Healing Potion", effect: "Restores health", potency: 60 });
+  let potion2 = new Potion({ name: "Mana Potion", effect: "Restores mana", potency: 30 });
+  let potion3 = new Potion({ name: "Stamina Potion", effect: "Restores stamina", potency: 50 });
+
+  // Save sample potions to the database
+  await potion1.save();
+  await potion2.save();
+  await potion3.save();
+
+  console.log("Database seeded with sample potions");
+}
+
+// Determine whether to reseed the database on startup
+let reseed = true;
+db.once('open', async () => {
+  if (reseed) { await recreateDB(); }
+});
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // Middleware setup
-app.use(logger('dev')); 
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Passport setup
-passport.use(new LocalStrategy(Account.authenticate()));  // Use the local strategy for authentication
-passport.serializeUser(Account.serializeUser());  // Serialize user
-passport.deserializeUser(Account.deserializeUser());  // Deserialize user
-
-// Session setup for Passport
-app.use(require('express-session')({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Routes
+// Register routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/resource', resourceRouter);
-app.use('/galaxies', galaxiesRouter);
-//app.use('/account', accountRouter);  // Ensure account route is used for login/register/logout
+app.use('/potion', potionRouter);  
+app.use('/grid', gridRouter);
+app.use('/randomitem', pickRouter);
+app.use('/resource', resourceRouter); // Use the resource router for the `/resource` endpoint
 
 // Catch 404 and forward to error handler
-app.use((req, res, next) => {
+app.use(function(req, res, next) {
   next(createError(404));
 });
 
 // Error handler
-app.use((err, req, res, next) => {
+app.use(function(err, req, res, next) {
+  // Provide error message and stack trace in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // Render error page
   res.status(err.status || 500);
   res.render('error');
 });
-
-// Ensure the database is seeded only after the connection is established
-mongoose.connection.once('open', async () => {
-  console.log('MongoDB connection is open');
-
-  let reseed = true; // Set to false to prevent reseeding
-  if (reseed) {
-    try {
-      console.log('Reseeding database...');
-
-      // Clear existing data
-      await Galaxy.deleteMany();
-
-      // Add new instances with valid data
-      const instance1 = new Galaxy({ name: "Milky Way", year: 1234, inventor: "Myself", distance: 18000, type: "Spiral" });
-      const instance2 = new Galaxy({ name: "Andromeda", year: 1100, inventor: "My Friend", distance: 1222, type: "Elliptical" });
-      const instance3 = new Galaxy({ name: "Triangulum", year: 1400, inventor: "MeOwn", distance: 1110, type: "Irregular" });
-
-      await instance1.save();
-      await instance2.save();
-      await instance3.save();
-
-      console.log("Database seeded with galaxies!");
-    } catch (err) {
-      console.error('Error while seeding database:', err);
-    }
-  }
-});
-
 
 module.exports = app;

@@ -1,0 +1,48 @@
+extends layout
+ 
+block content
+  h1= title
+  - let potionId = toShow._id
+  - let name = toShow.name
+  - let effect = toShow.effect
+  - let potency = toShow.potency
+ 
+  div.row(class='mb-4')
+    div.col-md-12
+      p.m-0
+        | ID is:
+        span.font-weight-bold #{potionId}
+ 
+  - let actionid = "/resource/potions/" + potionId
+  form(id='PotionForm', action= actionid, method="PUT")
+    div.form-group
+      label.potionAttr(for='name') Potion Name
+      input#name.form-control(type='text', name='name', value=name)
+ 
+    div.form-group
+      label.potionAttr(for='effect') Effect
+      input#effect.form-control(type='text', name='effect', value=effect)
+ 
+    div.form-group
+      label.potionAttr(for='potency') Potency
+      input#potency.form-control(type='number', name='potency', value=potency, required)
+ 
+    // Submit button
+    div.form-group
+      input(type="submit", class="btn btn-primary")
+ 
+  script.
+    document.forms['PotionForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      fetch(event.target.action, {
+        method: 'PUT',
+        body: new URLSearchParams(new FormData(event.target))
+      }).then((resp) => {
+        return resp.json();
+      }).then((body) => {
+        alert("Update succeeded");
+        console.log("Server response:", body);
+      }).catch((error) => {
+        alert("Update failed: " + error);
+      });
+    });

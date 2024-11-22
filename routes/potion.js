@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var galaxy_controller = require('../controllers/galaxies');
+var galaxy_controller = require('../controllers/potion');
 
 // Routes
 router.get('/', galaxy_controller.galaxy_list);

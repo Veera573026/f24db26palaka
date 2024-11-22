@@ -1,15 +1,37 @@
-extends layout
 
+extends layout
+ 
 block content
-  h1 Welcome to vinay's web pages
-  p This is a sample web page with an interactive button.
-  button(type="button", class="btn btn-secondary", onclick="boost()") Sample Button
-  div#boost Add in extra
-  script.
-    let value = 0;
-    let amt = 3;
-    function boost() {
-      amt += 1;
-      value += amt;
-      document.getElementById('boost').innerText = `Boosted ${value} by ${amt}`;
-    }
+  h1= title
+  p This page will display a grid based on query parameters.
+ 
+   body
+   
+    p Query Rows: #{query.rows}, Query Columns: #{query.cols}
+ 
+   
+    - const rows = Number(query.rows)
+    - const cols = Number(query.cols)
+ 
+   
+    - if (!Number.isInteger(rows) || !Number.isInteger(cols))
+      p Error: Rows and columns must be integers.
+ 
+   
+    - else if (rows < 3 || rows > 13)
+      p Error: Rows must be between 3 and 13.
+ 
+    - else if (cols < 3 || cols > 13)
+      p Error: Columns must be between 3 and 13.
+ 
+   
+    - else
+      table#outer
+       
+        - for (let i = 0; i < rows; i++) {
+          tr#middle
+           
+            - for (let j = 0; j < cols; j++) {
+              td= (i * i + j)  
+            - }
+          - }

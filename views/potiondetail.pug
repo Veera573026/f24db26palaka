@@ -1,0 +1,59 @@
+extends layout
+
+block content
+  h1= title
+  - let potionId = toShow._id
+  - let name = toShow.name
+  - let effect = toShow.effect
+  - let potency = toShow.potency
+
+  div.container
+    div.row.mb-4
+      div.col-md-12.text-center
+
+    div.row.mb-3
+      div.col-md-4
+        p.potionLabel <strong>Potion ID:</strong>
+      div.col-md-8
+        p.potionValue #{potionId}
+
+    div.row.mb-3
+      div.col-md-4
+        p.potionLabel <strong>Name:</strong>
+      div.col-md-8
+        p.potionValue #{name}
+
+    div.row.mb-3
+      div.col-md-4
+        p.potionLabel <strong>Effect:</strong>
+      div.col-md-8
+        p.potionValue #{effect}
+
+    div.row.mb-3
+      div.col-md-4
+        p.potionLabel <strong>Potency:</strong>
+      div.col-md-8
+        p.potionValue #{potency}
+
+  div.row.mt-4
+      div.col-md-12
+        a.btn.btn-primary(href="/resource/potions") Back to Collection
+        
+  style.
+    .potionLabel {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .potionValue {
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    .container {
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
