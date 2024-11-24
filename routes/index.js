@@ -11,7 +11,6 @@
 var express = require('express');
 var passport = require('passport');
 var router = express.Router();
-<<<<<<< HEAD
 var Account = require('../models/account');
 router.get('/', function (req, res) {
   res.render('index', { title: 'plant App', user: req.user });
@@ -70,35 +69,4 @@ router.get('/logout', function (req, res) {
 router.get('/ping', function (req, res) {
   res.status(200).send("pong!");
 });
-=======
-var passport = require('passport');  // Import passport for authentication
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', user: req.user });  // Pass user info to the view
-});
-
-/* GET login page */
-router.get('/login', function(req, res, next) {
-  res.render('login', { title: 'Login' });
-});
-
-/* POST login */
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/login',
-  failureFlash: true
-}));
-
-/* GET logout */
-router.get('/logout', function(req, res) {
-  req.logout(function(err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect('/');
-  });
-});
-
->>>>>>> 7aed5c59f629a1cdde052b98f4532532eb01c877
 module.exports = router;
