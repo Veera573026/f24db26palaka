@@ -1,0 +1,25 @@
+extends layout
+ 
+block content
+  h1= title
+  if (toShow == null)
+    h2 No instance to detail
+  else
+    - let plantid = toShow._id
+    - let plant_name = toShow.plant_name
+    - let plant_type = toShow.plant_type
+    - let plant_age = toShow.plant_age
+     
+    div
+      div.row
+        div(class='plantAttr mr-3') plant ID:
+        div #{plantid}
+      div.row
+        div(class='plantAttr mr-3') plant Type:
+        div #{plant_name}
+      div.row
+        div(class='plantAttr mr-3') plant type:
+        div #{plant_type}
+      div.row
+        div(class='plantAttr mr-3') plant age:
+        div #{plant_age}

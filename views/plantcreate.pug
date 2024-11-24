@@ -1,0 +1,32 @@
+extends layout
+
+block content
+    h1= title
+    form(id='plantForm', action="/resource/plants", method="POST")
+        div.form-group
+            label.plantAttr(for='plant_name') plant name
+            input#plant_name(type='text', name='plant_name')
+        div.form-group
+            label.plantAttr(for='plant_type') plant type
+            input#plant_type(type='text', name='plant_type')
+        div.form-group
+            label.plantAttr(for='plant_age') plant age
+            input#age(type='number', name='plant_age')
+        input(type="submit")
+
+    script.
+        document.forms['plantForm'].addEventListener('submit', (event) => {
+            event.preventDefault();
+            // Indicate submission
+            alert("Submitting form...");
+            fetch(event.target.action, {
+                method: 'POST',
+                body: new URLSearchParams(new FormData(event.target)) // Serialize the form
+            }).then((resp) => {
+                return resp.json(); // Handle server response
+            }).then((body) => {
+                alert("Save succeeded!");
+            }).catch((error) => {
+                alert("Save failed: " + error);
+            });
+        });

@@ -1,12 +1,16 @@
-doctype html
-html
-  head
-    title A random item
-    link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
-  body
-    h1 A Random Item Display
-    .container
-      // Loop exactly 3 times to display 3 random images
-      each _, index in [1, 2, 3]
-        - let rand = Math.floor(Math.random() * image_names.length)
-        img(src=`/images/${image_names[rand]}`, alt="img #{rand}", height="300", width="300")
+//- extends layout
+
+//- block content
+//-   h1= title
+
+extends layout
+
+block content
+  h1= title
+  - var image_names = ['plant1.jpg', 'plant2.jpg', 'plant3.jpg', 'plant4.jpg', 'plant5.jpg'] 
+
+
+  - for (let i = 0; i < 3; i++)
+    - var randomIndex = Math.floor(Math.random() * image_names.length)
+    - var imageName = image_names[randomIndex]
+    img(src=`/images/${imageName}`, alt=`Random ${imageName}`, height="300", width="300")

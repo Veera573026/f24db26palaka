@@ -1,0 +1,55 @@
+block content
+    h1= title
+    if (toShow == null)
+      h2 No instance to update
+    else
+      // Define variables for readability
+      - let plantid = toShow._id
+      - let plant_name = toShow.plant_name
+      - let plant_age = toShow.plant_age
+      - let plant_type = toShow.plant_type
+  
+      div.row(class='mb-2')
+          div.mr-1 ID is:
+          div #{plantid}
+  
+      // Generate the action URL for the PUT request
+      - let actionid = "/plants/" + plantid
+      form(id='plantForm', action=actionid, method="PUT")
+          div.form-group
+              label.plantAttr(for='plant_name') plant Name
+              input#plant_name(type='text', name='plant_name', value=plant_name, required=true)
+          div.form-group
+              label.plantAttr(for='plant_type') plant type
+              input#plant_type(type='text', name='plant_type', value=plant_type, required=true)
+          div.form-group
+              label.plantAttr(for='plant_age') plant age
+              input#plant_age(type='number', name='plant_age', value=plant_age, min=0, step="0.01")
+          input(type="submit", value="Update")
+  
+      script.
+          document.forms['plantForm'].addEventListener('submit', (event) => {
+              event.preventDefault();
+              // Indicate submission
+              alert("Submitting update...");
+              
+              // Send a PUT request with serialized form data
+              fetch(event.target.action, {
+                  method: 'PUT',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(Object.fromEntries(new FormData(event.target))) // Serialize form data to JSON
+              })
+              .then((resp) => {
+                  if (!resp.ok) throw new Error("Failed to update plant");
+                  return resp.json();
+              })
+              .then((body) => {
+                  alert("Update succeeded!");
+                  console.log("Server response:", body);
+              })
+              .catch((error) => {
+                  alert("Update failed: " + error.message);
+              });
+          });
