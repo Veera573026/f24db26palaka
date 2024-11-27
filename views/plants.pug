@@ -7,9 +7,9 @@ block content
   div(class="container-fluid")
     div(class="col m-1")
       each item in items
-        - let destination = `dispatch(\"/resource/update?id=${item._id}\")`
-        - let destination1 = `dispatch(\"/resource/detail?id=${item._id}\")`
-        - let destination2 = `dispatch(\"/resource/delete?id=${item._id}\")`
+        - let destination = `dispatch(\"/plants/update?id=${item._id}\")`
+        - let destination1 = `dispatch(\"/plants/detail?id=${item._id}\")`
+        - let destination2 = `dispatch(\"/plants/delete?id=${item._id}\")`
         div(class="row-sm-2", class="m-1") Item #{item.plant_name}(#{item.plant_type}) is #{item.plant_age}
         button.btn( class="btn-primary m-1", onclick= destination) Update
         br
@@ -19,37 +19,4 @@ block content
     function dispatch(path){
       window.location.href=path
     }
-  //- -   
-  //-   let results = [
-  //-     {
-  //-       plant_name: "Turmeric",
-  //-       plant_type: "India", 
-  //-       plant_age: 20
-  //-     },
-  //-     {
-  //-       plant_name: "Cinnamon", 
-  //-       plant_type: "Sri Lanka", 
-  //-       plant_age: 40
-  //-     },
-  //-     {
-  //-       plant_name: "Bay leaf", 
-  //-       plant_type: "Himalayas", 
-  //-       plant_age: 50
-  //-     }
-  //-   ]
-  //- div(class="container-fluid")
-  //-   div(class="row")
-  //-     each item, index in results  
-  //-       div(class="col-sm-2", onclick=`buy(${index})`) 
-  //-         p Name: #{item.plant_name}
-  //-         p type: #{item.plant_type}
-  //-         p age: #{item.plant_age}
-  //-         //- button(type="button", class="btn btn-primary") 
-  //-       br
-
-  //- script.
-  //-   function buy(itemNum) {
-  //-     alert(`You purchased item ${itemNum + 1}`);
-  //-   }
-  
-
+ 

@@ -78,9 +78,9 @@ async function recreateDB() {
   // Delete everything
   await plant.deleteMany();
   let instance1 = new plant({ 
-    plant_name: "Clove",
-        plant_type: "Andhra Pradesh", 
-        plant_age: 40
+    plant_name: "Rose",
+        plant_type: "Flower", 
+        plant_age: 2
   });
   instance1.save().then(doc=>{
     console.log("First object saved")
@@ -89,9 +89,9 @@ async function recreateDB() {
   })
 
   let instance2 = new plant({
-    plant_name: "Star anise", 
-        plant_type: "Himalayas", 
-        plant_age: 60
+    plant_name: "Bamboo", 
+        plant_type: "Tree", 
+        plant_age: 5
   });
   instance2.save().then(doc=>{
     console.log("Second object saved")
@@ -100,9 +100,9 @@ async function recreateDB() {
   })
 
   let instance3 = new plant({ 
-    plant_name: "Caraway", 
-        plant_type: "Rajasthan", 
-        plant_age: 80  
+    plant_name: "Mint", 
+        plant_type: "Herb", 
+        plant_age: 1  
   });
   instance3.save().then(doc=>{
     console.log("Third object saved")
