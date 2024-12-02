@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
 
 const plantSchema = mongoose.Schema({
-  // plants_name: String,
-  // type: String,
-  // price: Number
+
 
   plant_name: {
     type: String,
@@ -14,8 +12,11 @@ const plantSchema = mongoose.Schema({
     required: true
   },
   plant_age: {
-    type: Number
-  }
+    type: Number,
+    required: [true, "Plant age is required"], // Custom error message
+    min: [1, "Plant age must be at least 1"],  // Added minimum value
+    max: [100, "Plant age must be at most 100"], // Added maximum value
+  },
 })
 
 module.exports = mongoose.model("plant",
