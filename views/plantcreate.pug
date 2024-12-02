@@ -1,35 +1,76 @@
-extends layout
+//- extends layout
 
+//- block content
+//-     h1= title
+//-     form(id='plantForm', action="/resource/plants", method="POST")
+//-         div.form-group
+//-             label.plantAttr(for='plant_name') plant name
+//-             input#plant_name(type='text', name='plant_name')
+//-         div.form-group
+//-             label.plantAttr(for='plant_type') plant type
+//-             input#plant_type(type='text', name='plant_type')
+//-         div.form-group
+//-             label.plantAttr(for='plant_age') plant age
+//-             input#plant_age(type='number', name='plant_age', value=(formData && formData.plant_age))
+//-             if errors && errors.plant_age 
+//-                 span.error=errors.plant_age.message
+//-         input(type="submit")
+
+//-     script.
+//-         document.forms['plantForm'].addEventListener('submit', (event) => {
+//-             event.preventDefault();
+//-             // TODO do something here to show user that form is being submitted
+//-             fetch(event.target.action, {
+//-             method: 'POST',
+//-             body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+//-             }).then((resp) => {
+//-             return resp.json(); // or resp.text() or whatever the server sends
+//-             }).catch((error) => {
+//-             // TODO handle error
+//-             alert("Save failed " + error )
+//-             }).then((body) => {
+//-             alert("Save succeded")
+//-             // TODO handle body
+//-             });
+//-         });
+
+
+
+
+extends layout
 block content
     h1= title
     form(id='plantForm', action="/resource/plants", method="POST")
         div.form-group
             label.plantAttr(for='plant_name') plant name
             input#plant_name(type='text', name='plant_name')
+            if errors && errors.plant_name
+                span.error= errors.plant_name.message
         div.form-group
-            label.plantAttr(for='plant_type') plant type
+            label.plantAttr(for='plant_type') plant origin
             input#plant_type(type='text', name='plant_type')
+            if errors && errors.plant_type
+                span.error= errors.plant_type.message
         div.form-group
-            label.plantAttr(for='plant_age') plant age
-            input#plant_age(type='number', name='plant_age', value=(formData && formData.plant_age))
-            if errors && errors.plant_age 
-                span.error=errors.plant_age.message
+            label.plantAttr(for='plant_age') plant Cost
+            input#plant_age(type='number', name='plant_age')
+            if errors && errors.plant_age
+                span.error= errors.plant_age.message
         input(type="submit")
-
+ 
     script.
         document.forms['plantForm'].addEventListener('submit', (event) => {
             event.preventDefault();
-            // TODO do something here to show user that form is being submitted
+            // Indicate submission
+            alert("Submitting form...");
             fetch(event.target.action, {
-            method: 'POST',
-            body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+                method: 'POST',
+                body: new URLSearchParams(new FormData(event.target)) // Serialize the form
             }).then((resp) => {
-            return resp.json(); // or resp.text() or whatever the server sends
-            }).catch((error) => {
-            // TODO handle error
-            alert("Save failed " + error )
+                return resp.json(); // Handle server response
             }).then((body) => {
-            alert("Save succeded")
-            // TODO handle body
+                alert("Save succeeded!");
+            }).catch((error) => {
+                alert("Save failed: " + error);
             });
         });

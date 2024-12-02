@@ -3,6 +3,8 @@ extends layout
 block content
   h1= title
   p #{title} page is running by Veeranjaneyulu Palaka
+  - let destination3 = `dispatch(\"/plants/create\")`
+  button.btn( class="btn-primary m-1", onclick= destination3) Create
   - let items = results
   div(class="container-fluid")
     div(class="col m-1")
@@ -11,7 +13,9 @@ block content
         - let destination1 = `dispatch(\"/plants/detail?id=${item._id}\")`
         - let destination2 = `dispatch(\"/plants/delete?id=${item._id}\")`
         div(class="row-sm-2", class="m-1") Item #{item.plant_name}(#{item.plant_type}) is #{item.plant_age}
-        button.btn( class="btn-primary m-1", onclick= destination) Update
+        button.btn( class="btn-warning m-1", onclick= destination) Update
+        button.btn( class="btn-secondary m-1", onclick= destination1) Detail
+        button.btn( class="btn-danger m-1", onclick= destination2) Delete
         br
         br
         
